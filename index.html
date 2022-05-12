@@ -6,27 +6,28 @@
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
-  <style>
-      #screenshotBox {
-          border: 1px solid rebeccapurple;
-      }
-  </style>
+  <link rel="stylesheet" href="./index.css">
 </head>
 <body>
-<button id="start">234234</button>
+<button id="start">start</button>
 <button id="cancel">cancel</button>
+<button id="info">info</button>
 
 <script type="module">
-  import {startSelectArea, cancelSelectArea} from "./lib";
+  import {startSelectArea, cancelSelectArea, getBoxInfo} from "./lib";
 
   const btn = document.getElementById('start')
   const cancelBtn = document.getElementById('cancel')
+  const infoBtn = document.getElementById('info')
 
   btn.addEventListener('click', () => {
     startSelectArea();
   })
   cancelBtn.addEventListener('click', () => {
     cancelSelectArea();
+  })
+  infoBtn.addEventListener('click', () => {
+    console.log(getBoxInfo())
   })
 </script>
 
