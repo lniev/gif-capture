@@ -1,35 +1,38 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-  <link rel="stylesheet" href="./index.css">
-</head>
-<body>
-<button id="start">start</button>
-<button id="cancel">cancel</button>
-<button id="info">info</button>
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+		/>
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>Document</title>
+		<link rel="stylesheet" href="./index.css" />
+	</head>
+	<body>
+		<button id="start">start</button>
+		<button id="cancel">cancel</button>
+		<button id="info">info</button>
+		<script src="./lib/recordRTC.min.js"></script>
+		<script src="./lib//gifRecord.min.js"></script>
 
-<script type="module">
-  import {startSelectArea, cancelSelectArea, getBoxInfo} from "./lib";
+		<script type="module" crossorigin="anonymous">
+			import Box from "./lib/index.js";
+			const btn = document.getElementById("start");
+			const cancelBtn = document.getElementById("cancel");
+			const infoBtn = document.getElementById("info");
 
-  const btn = document.getElementById('start')
-  const cancelBtn = document.getElementById('cancel')
-  const infoBtn = document.getElementById('info')
-
-  btn.addEventListener('click', () => {
-    startSelectArea();
-  })
-  cancelBtn.addEventListener('click', () => {
-    cancelSelectArea();
-  })
-  infoBtn.addEventListener('click', () => {
-    console.log(getBoxInfo())
-  })
-</script>
-
-</body>
+			btn.addEventListener("click", () => {
+				Box.readyDrawBox();
+			});
+			cancelBtn.addEventListener("click", () => {
+				Box.removeBox();
+			});
+			infoBtn.addEventListener("click", () => {
+				const info = Box.getBoxInfo();
+				console.log(info);
+			});
+		</script>
+	</body>
 </html>
