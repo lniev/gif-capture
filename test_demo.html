@@ -1,5 +1,5 @@
 <button id="btn-start-recording">Start Recording</button>
-<button id="btn-stop-recording" style="display: none;">Stop Recording</button>
+<button id="btn-stop-recording" style="display: none">Stop Recording</button>
 <button id="select" onclick="startSelect()">select</button>
 
 <style>
@@ -7,10 +7,10 @@
 		border: 1px solid rebeccapurple;
 	}
 </style>
-<br>
-<hr>
+<br />
+<hr />
 
-<div id="edit-panel" style="border-bottom: 1px solid;">
+<div id="edit-panel" style="border-bottom: 1px solid">
 	<div>
 		<label for="x">X</label>
 		<input type="number" name="x" id="x" value="0" />
@@ -35,8 +35,6 @@
 <img src="" alt="" id="img" height="240" width="320" />
 
 <script>
-
-	
 	var CROP_X = 100;
 	var CROP_Y = 200;
 	var CROP_W = 420; // default width
@@ -45,48 +43,46 @@
 	var MAX_VIDEO_HEIGHT = 1080;
 	var _canvas;
 	var _context;
-	var htmlCanvasElement = document.querySelector('canvas');
+	var htmlCanvasElement = document.querySelector("canvas");
 
 	function startSelect() {
 		function ejectMove(e) {
-			const [startX, startY] = [e.clientX, e.clientY]
-			const divEle = document.createElement('div')
-			divEle.id = "screenshot"
-			divEle.width = '1px'
-			divEle.height = '1px'
-			divEle.style.position = 'absolute'
-			divEle.style.top = startY + 'px'
-			divEle.style.left = startX + 'px'
-			document.body.appendChild(divEle)
-			// 
-			const moveEvent = (e) => {
-				console.log(333)
+			const [startX, startY] = [e.clientX, e.clientY];
+			const divEle = document.createElement("div");
+			divEle.id = "screenshot";
+			divEle.width = "1px";
+			divEle.height = "1px";
+			divEle.style.position = "absolute";
+			divEle.style.top = startY + "px";
+			divEle.style.left = startX + "px";
+			document.body.appendChild(divEle);
+			//
+			const moveEvent = e => {
+				console.log(333);
 
-				const moveX = e.clientX - startX
-				const moveY = e.clientY - startY
-				divEle.style.width = Math.abs(moveX) + 'px'
-				divEle.style.height = Math.abs(moveY) + 'px'
+				const moveX = e.clientX - startX;
+				const moveY = e.clientY - startY;
+				divEle.style.width = Math.abs(moveX) + "px";
+				divEle.style.height = Math.abs(moveY) + "px";
 				if (moveX < 0) {
-					divEle.left = e.clientX + 'px'
+					divEle.left = e.clientX + "px";
 				}
 				if (moveY < 0) {
-					divEle.top = e.clientY + 'px'
+					divEle.top = e.clientY + "px";
 				}
-			}
-			const [screenX, screenY] = [e.screenX, e.screenY]
+			};
+			const [screenX, screenY] = [e.screenX, e.screenY];
 
-			window.addEventListener('mousemove', moveEvent)
-			window.addEventListener('mouseup', () => {
+			window.addEventListener("mousemove", moveEvent);
+			window.addEventListener("mouseup", () => {
 				CROP_X = screenX - 1920;
 				CROP_Y = screenY;
-				window.removeEventListener('mousemove', moveEvent)
-				window.removeEventListener('mousedown', ejectMove)
-			})
+				window.removeEventListener("mousemove", moveEvent);
+				window.removeEventListener("mousedown", ejectMove);
+			});
 		}
-		window.addEventListener('mousedown', ejectMove)
+		window.addEventListener("mousedown", ejectMove);
 	}
-
-
 
 	// Form elements
 	// document.getElementById("x").value = CROP_X;
@@ -94,14 +90,12 @@
 	// document.getElementById("w").value = CROP_W;
 	// document.getElementById("h").value = CROP_H;
 
-	_context = htmlCanvasElement.getContext('2d');
+	_context = htmlCanvasElement.getContext("2d");
 
 	/**
 	 * Crops a video frame and shows it to the user
 	 */
-	function CropFrame(ev, stream, video, callback) {
-		callback = callback || function () { };
-
+	function CropFrame(video, callback) {
 		_canvas = htmlCanvasElement;
 
 		if (CROP_X < 0) {
@@ -126,52 +120,49 @@
 		_canvas.width = CROP_W;
 		_canvas.height = CROP_H;
 
-		_context.drawImage(video, CROP_X, CROP_Y, CROP_W, CROP_H, 0, 0, CROP_W, CROP_H);
-
-		// We need to scale down the image or else we get HTTP 414 Errors
-		// Also we scale down because of RTC message length restriction
-		var scanvas = document.createElement('canvas');
-		scanvas.width = _canvas.width;
-		scanvas.height = _canvas.height;
-
-		var wRatio = _canvas.width / 320;
-		var hRatio = _canvas.height / 240;
-		var maxRatio = Math.max(wRatio, hRatio);
-		if (maxRatio > 1) {
-			scanvas.width = _canvas.width / maxRatio;
-			scanvas.height = _canvas.height / maxRatio;
-		}
-		scanvas.getContext('2d').drawImage(_canvas, 0, 0, scanvas.width, scanvas.height);
-
-		callback(scanvas.toDataURL("image/jpeg"));
+		_context.drawImage(
+			video,
+			CROP_X,
+			CROP_Y,
+			CROP_W,
+			CROP_H,
+			0,
+			0,
+			CROP_W,
+			CROP_H
+		);
 	}
 
 	var recorder;
 
 	function getScreenStream(callback) {
 		if (navigator.getDisplayMedia) {
-			navigator.getDisplayMedia({
-				video: true
-			}).then(screenStream => {
-				callback(screenStream);
-			});
+			navigator
+				.getDisplayMedia({
+					video: true,
+				})
+				.then(screenStream => {
+					callback(screenStream);
+				});
 		} else if (navigator.mediaDevices.getDisplayMedia) {
-			navigator.mediaDevices.getDisplayMedia({
-				video: true
-			}).then(screenStream => {
-				callback(screenStream);
-			});
+			navigator.mediaDevices
+				.getDisplayMedia({
+					video: true,
+				})
+				.then(screenStream => {
+					callback(screenStream);
+				});
 		} else {
-			alert('getDisplayMedia API is not supported by this browser.');
+			alert("getDisplayMedia API is not supported by this browser.");
 		}
 	}
 
-	var mediaElement = document.querySelector('#mediaElement');
+	var mediaElement = document.querySelector("#mediaElement");
 
 	//开始
-	document.querySelector('#btn-start-recording').onclick = function () {
-		const screenshotEle = document.getElementById('screenshot')
-		if (!screenshotEle) return
+	document.querySelector("#btn-start-recording").onclick = function () {
+		const screenshotEle = document.getElementById("screenshot");
+		if (!screenshotEle) return;
 		// CROP_X = screenshotEle.offsetLeft;
 		// CROP_Y = screenshotEle.offsetTop;
 		CROP_W = screenshotEle.clientWidth;
@@ -182,23 +173,17 @@
 		document.getElementById("w").value = CROP_W;
 		document.getElementById("h").value = CROP_H;
 
-		document.querySelector('#btn-start-recording').style.display = 'none';
+		document.querySelector("#btn-start-recording").style.display = "none";
 
 		getScreenStream(function (screen) {
 			var inited = false;
-
 			mediaElement.ontimeupdate = function (ev) {
 				if (!inited) {
-					VIDEO_WIDTH = mediaElement.offsetWidth;
-					VIDEO_HEIGHT = mediaElement.offsetHeight;
-
-					mediaElement.style.display = 'none';
-					document.querySelector('#edit-panel').style.display = 'block';
-
+					mediaElement.style.display = "none";
+					document.querySelector("#edit-panel").style.display = "block";
 					inited = true;
 				}
-
-				CropFrame(ev, screen, mediaElement);
+				CropFrame(mediaElement);
 			};
 
 			mediaElement.srcObject = screen;
@@ -212,42 +197,31 @@
 			var captureStream = htmlCanvasElement.captureStream();
 			recorder = RecordRTC(captureStream, {
 				// type: 'video'，
-				type: 'gif',
+				type: "gif",
 				frameRate: 1,
 				quality: 100,
 				width: CROP_W,
 				hidden: CROP_H,
-				onGifRecordingStarted: function () {
-				},
-				onGifPreview: function (gifURL) {
-					var image = document.getElementById('img')
-					image.src = gifURL;
-				}
+				onGifRecordingStarted: function () {},
+				onGifPreview: function (gifURL) {},
 			});
 			recorder.startRecording();
-			document.querySelector('#btn-stop-recording').style.display = 'inline';
+			document.querySelector("#btn-stop-recording").style.display = "inline";
 		});
 	};
 
-
-
 	function stopRecordingCallback() {
-		var image = document.getElementById('img')
+		var image = document.getElementById("img");
 		image.src = URL.createObjectURL(recorder.getBlob());
 		recorder.destroy();
 		recorder = null;
 	}
 
 	// 停止
-	document.querySelector('#btn-stop-recording').onclick = function () {
-		document.querySelector('#btn-stop-recording').style.display = 'none';
-
+	document.querySelector("#btn-stop-recording").onclick = function () {
 		recorder.stopRecording(function () {
 			var blob = recorder.getBlob();
-
-			document.querySelector('#edit-panel').style.display = 'none';
-			mediaElement.style.display = 'block';
-
+			mediaElement.style.display = "block";
 			mediaElement.srcObject = null;
 			mediaElement.src = URL.createObjectURL(blob);
 
@@ -255,8 +229,8 @@
 				mediaElement.screen.stop();
 				mediaElement.screen = null;
 			}
-			stopRecordingCallback()
-			document.querySelector('#btn-start-recording').style.display = 'inline';
+			stopRecordingCallback();
+			document.querySelector("#btn-start-recording").style.display = "inline";
 		});
 	};
 
