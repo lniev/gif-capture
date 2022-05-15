@@ -1,3 +1,14 @@
 #screenshotBox {
-    border: 1px solid #0066ff;
+	border: 1px solid #0066ff;
+}
+#screenshotBox_menu {
+	background-color: #fff;
+	border: 1px solid #ccc;
+	position: absolute;
+	right: 0;
+}
+.screenshotBox_menu_item {
+	margin: 4px 10px;
+	line-height: 20px;
+	display: inline-block;
 }
