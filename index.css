@@ -2,9 +2,10 @@
 	border: 1px solid #0066ff;
 	box-shadow: 0px 0px 1000px 10000px rgb(0, 0, 0, 35%);
 }
-#screenshotMask {
-	background-color: rgba(0, 0, 0, 0.35);
+#screenshotBox:hover {
+	cursor: move;
 }
+
 #screenshotBox_menu {
 	background-color: #fff;
 	position: absolute;
