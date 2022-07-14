@@ -1,13 +1,13 @@
 {
   "name": "gif-record",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "./lib/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config webpack.config.js"
   },
-  "keywords": [],
+  "keywords": ["gif-record","screen-to-gif", "gif", "screen", "record"],
   "author": "",
   "license": "ISC",
   "dependencies": {
